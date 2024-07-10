@@ -1,18 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { UseCase } from '../../index';
 import SaveTaskDto from './SaveTaskDto';
+import TaskRepository from '../../Repositories/TaskRepository';
+import { Task } from '@prisma/client';
 
 @Injectable()
-export default class SaveTaskUseCase
-  // @todo DO NOT USE any HERE, USE THE ENTITY THAT YOU SHOULD RETURN
-  implements UseCase<Promise<any>, [dto: SaveTaskDto]>
+export default class SaveTaskUseCase 
+  implements UseCase<Promise<Task>, [dto: SaveTaskDto]>
 {
-  constructor() {}
+  constructor(private readonly taskRepository: TaskRepository) {}
 
-  // @todo DO NOT USE any HERE, USE THE ENTITY THAT YOU SHOULD RETURN
-  async handle(dto: any) {
-    /*
-    * @todo IMPLEMENT HERE : VALIDATION DTO, DATA SAVING, ERROR CATCHING
-     */
+  async handle(dto: SaveTaskDto): Promise<Task> {
+    try {
+      const task = await this.taskRepository.save(dto);
+      return task;
+    } catch (error) {
+      console.error('Error saving task:', error);
+      throw error;
+    }
   }
+  
 }
