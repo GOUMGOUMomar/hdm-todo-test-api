@@ -33,7 +33,9 @@ export default class TaskRepository {
     } else {
       const updatedTask = await this.prisma.task.update({
         where: { id: Number(data.id) },
-        data: data as Prisma.TaskUpdateInput | Prisma.TaskUncheckedUpdateInput,
+        data: {
+          name: (data as Prisma.TaskCreateInput).name
+        },
       });
       return updatedTask;
     }

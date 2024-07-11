@@ -1,8 +1,8 @@
-// @todo SOMETHING IS WRONG HERE, THE ENDPOINT IS BROKEN, FIX IT
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UseCase } from '../../index';
 import TaskRepository from '../../Repositories/TaskRepository';
 
+@Injectable()
 export default class DeleteTask
   implements UseCase<Promise<boolean>, [id: number]>
 {
